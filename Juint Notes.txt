@@ -1,0 +1,126 @@
+JUNIT 
+
+Q- What is the point of writing automated test?
+A : The point of writing automated tests not so much to verify that the code works now.
+THe point is to verify on an ongoing basis that the code continues to work in the future.
+
+Q: If we had Junit 4, then JUNIT5 came?
+A: JUnit4:
+	1. Junit4 is more old than 14 yrs now.
+	2. Not up to date with newer testing patterns
+	3. Not up to date with java language features.
+	4. Monolithic architecture
+	5. Bugs and features requests piled up.
+	
+	
+	
+*Junit5 architecture:
+- Architecture starts with platform.
+- Platform is the core, that comprises the library of Junit which involved in running the test. Providing a way for you to call the test runner, it provides an execution context. THis things are the part of core platform.
+- This core platform is something that we developer not going to interact directly.
+- There are 3 portions with which developer is going to interact
+	1. Jupiter, 2.Vintage, 3.Extend
+
+1.Jupiter:	
+	- We developer interacting with the Junit 5 Api's whose name is Jupiter(JU is common in both, and Jupiter is the 5th planet from sun, So named api's as jupiter).
+	- @Test, @assert those are the parts of jupiter.
+
+2. Vintage:
+	- Vintage is another set of api's that you can use when you are running older Juint i.e Junit4.
+
+3. Extend:
+	-If you want to come up with your own api then you can do it.
+	- You can still use the platform to run your own api's that advantage Junit platform gives you.
+	
+-----------------------------------
+
+Dependencies:
+
+1.junit-jupiter-api: API for writing tests using JUnit Jupiter.
+2. junit-jupiter-engine : Implementation of the TestEngine API for JUnit Jupiter.
+3. junit-vintage-engine: A thin layer on top of JUnit 4 to allow running vintage tests.
+
+
+@Test  annotation:
+- It is use to mark a method as a test.
+- Informs the JUnit engine what methods need to run.
+
+
+Steps need to follow:
+1. Create the instance of the class under test.
+2. Set up inputs.
+3. Execute the code you want to test.
+4. Verify the result is what you expect.
+
+
+Assertion:
+1. assertEquals: Check whether both the parameter are same or not . ex: assertEquals(expected, actual);
+
+- assertEquals(expected, actual) : Asserts that expected and actual are equal.
+
+- assertArrayEquals(expectedArray, actualArray) : Verifies each item in the arrys are equal in the right position.
+
+- assertIterableEquals(expectedArray, actualArray) : Verifies each item in the iterable are equal in the corresponding positions.
+
+----------------------------------------------------
+
+- There is a plugin called surefire plugin. It's a maven plugin, which lets you run a unit test using maven commands.
+- You need to write plugin under plugins tag, and you can use maven repository of surefire. Just remove group-id from it. For more clarification view pom.xml file.
+
+=> After adding this plugin you can run your project as maven test.
+
+---------------------------------------------------------------
+
+assertThrows : 
+- It get fails when it throws different exception, than the expected exception. 
+- It also get fails if it not throws any exception.
+- Takes 2-3 input parameter. assertThrows(Class<T> expectedType, Executable executable);   Here executable is lambda, and expectedType can be expected exception.
+
+------------------------------------------------------
+
+Test Life Cycle:
+- Test life cycle is the process in which test instances are created, it's managed and destroy.
+
+- JUnit provide the facility to run some test at the very beginning, and at the end.
+We can called it as hooks that Junit provides. It as below:
+	-> Initialize before anything in this class.
+	-> Initialize before each method.
+	-> Teardown after each method.
+	-> Teardown after all methods done.
+	
+	This annotations are @BeforeAll, @AfterAll, @BeforeEach, @AfterEach
+	
+IMP: @BeforeAll method gets call even before the instance of that test class get create. SO this might lead to an error.
+	- That's why @BeforeAll method is always static. (static method does not have the dependency on instance. It can run before the instance got created.)
+	- ex : You have a class TestAll, and having one method name as testMethod which is annotated with @BeforeAll. So this method will get called even before the instance of TestAll method get created. SO that's why we need to keep this method which is annotated with @BeforeAll as static.
+	
+	
+-----------------------------------------------------------
+5Underscore
+
+@DisplayName: This anonotation is use to give name to the tests.
+
+@Disabled : If any test you don't want to run then you can use this annotation.
+
+---------------------------------------------
+6Underscore
+
+Conditional Execution	
+
+- @EnabledOnOs(Os.LINUX) : Enable for only that OS. For other OS this test get disable automatically
+- @EnabledOnJre(JRE.JAVA_11)
+- @EnabledIf
+- @EnabledIfSystemProperty
+- @EnabledIfEnvironmentVariable
+
+
+=> Ways to handle external factor
+- assumeTrue method like assertion: This assumeTrue method is use when certain assumptions is there. For example your test is valid if server is up, and if server is down then it always goingto fail. So in that case this kind of method we can use.
+
+---------------------------------------------
+
+7Underscore
+
+-@AssertAll : This annotation is use to run bunch of assert statement
+
+-@Nested : When you want to group multiple method you can use this annotation.
